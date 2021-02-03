@@ -8,7 +8,7 @@ export default function Profile() {
     useEffect(()=>{
         fetch('/myposts',{
             headers:{
-                "Authorization":" Bearer "+localStorage.getItem("jwt")
+                "Authorization":` Bearer ${localStorage.getItem("jwt")}`
             }
         }).then(res=>res.json())
             .then(result=>{

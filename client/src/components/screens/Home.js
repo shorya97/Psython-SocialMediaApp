@@ -119,7 +119,8 @@ export default function Home() {
                 data.map(item=>{
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5 style={{padding:"5px"}}><Link to={item.uploadedBy._id !== state._id ? "/profile/"+item.uploadedBy._id : "/profile"}>{item.uploadedBy.name}</Link> {item.uploadedBy._id == state._id 
+                            <h5 style={{padding:"5px"}}><img src={item.uploadedBy.pic} alt="" style={{width:"40px" ,height: "40px",borderRadius: "80px"}}/>  <Link to={item.uploadedBy._id !== state._id ? "/profile/"+item.uploadedBy._id : "/profile"} 
+                            style={{ position: "relative" ,bottom: "9px" }}>{item.uploadedBy.name}</Link> {item.uploadedBy._id == state._id 
                             && <i className="material-icons" style={{float:"right"}} onClick={()=>deletePost(item._id)}>delete</i>
                             } </h5>
                             <div className="card-image">
@@ -127,7 +128,7 @@ export default function Home() {
                             </div>
                             <div className="card-content">
                             {item.likes.includes(state._id)
-                                ? <i className="material-icons" onClick={()=>{unlikePost(item._id)}} style={{color:"orange"}}>thumb_down</i>
+                                ? <i className="material-icons" onClick={()=>{unlikePost(item._id)}} style={{color:"red"}}>thumb_down</i>
                                 : <i className="material-icons" onClick={()=>{likePost(item._id)}} style={{color:"orange"}}>thumb_up</i>
                             }
                                 <h6>{item.likes.length} likes</h6>
@@ -136,7 +137,8 @@ export default function Home() {
                                 {
                                     item.comments.map(record=>{
                                         return(
-                                            <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.uploadedBy.name}</span> {record.text}</h6>
+                                            <h6 key={record._id}><img src={record.uploadedBy.pic} alt="" style={{width:"20px" ,height: "20px",borderRadius: "60px"}}/>  <Link to={record.uploadedBy._id !== state._id ? "/profile/"+record.uploadedBy._id : "/profile"}>
+                                                <span style={{fontWeight:"500"}}>{record.uploadedBy.name}</span></Link>  {record.text}</h6>
                                         )
                                     })
                                 }
