@@ -9,11 +9,11 @@ const {JWT_SECRET} = require('../config/keys')
 const requireLogin = require('../middleware/requireLogin')
 const nodemailer = require('nodemailer')
 const sendgridTransport = require('nodemailer-sendgrid-transport')
-//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
+const {SENDGRID_API,EMAIL} = require("../config/keys")
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth:{
-        api_key:"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"
+        api_key:SENDGRID_API
     }
 }))
 
@@ -40,7 +40,7 @@ router.post('/signup',(req,res)=>{
                         .then(user=>{
                             transporter.sendMail({
                                 to:user.email,
-                                from:"no-reply@psython.com",
+                                from:"shoryat71@gmail.com",
                                 subject:"Signup success",
                                 html:"<h1>Welcome to Psython</h1>"
                             })
@@ -97,7 +97,19 @@ router.post('/reset-password',(req,res)=>{
                     return res.status(422).json({error:"User dosen't exist"})
                 }
                 user.resetToken = token
-                user.expire = Date.now() + 
+                user.expireToken = Date.now() + 36000000
+                user.save().then((result)=>{
+                    transporter.sendMail({
+                        to:user.email,
+                        from:"no-reply@psython.com",
+                        subject:"Passowrd Reset",
+                        html:`
+                            <p>Reset your password</p>
+                            <h5>Click <a href="${EMAIL}/reset/${token}">here</a> to reset password</h5>
+                        `
+                    })
+                    res.json({message:"An email has been sent to you"})
+                })
             })
     })
 })

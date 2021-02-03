@@ -28,8 +28,9 @@ router.post('/createpost',requireLogin,(req,res)=>{
 //Show all Posts
 router.get('/allposts',requireLogin,(req,res)=>{
     Post.find()
-        .populate("uploadedBy","_id name")
-        .populate("comments.uploadedBy","_id name")
+        .populate("uploadedBy","_id name pic")
+        .populate("comments.uploadedBy","_id name pic")
+        .sort('-createdAt')
         .then(posts=>{
             res.json({posts})
         })
@@ -41,8 +42,9 @@ router.get('/allposts',requireLogin,(req,res)=>{
 //Show private Posts
 router.get('/getpvtpost',requireLogin,(req,res)=>{
     Post.find({uploadedBy:{$in:req.user.following}})
-        .populate("uploadedBy","_id name")
-        .populate("comments.uploadedBy","_id name")
+        .populate("uploadedBy","_id name pic")
+        .populate("comments.uploadedBy","_id name pic")
+        .sort('-createdAt')
         .then(posts=>{
             res.json({posts})
         })
@@ -55,7 +57,7 @@ router.get('/getpvtpost',requireLogin,(req,res)=>{
 //Posts by current user
 router.get('/myposts',requireLogin,(req,res)=>{
     Post.find({uploadedBy:req.user._id})
-        .populate("uploadedBy","_id name")
+        .populate("uploadedBy","_id name pic")
         .then(mypost=>{
             res.json({mypost})
         })
@@ -71,8 +73,8 @@ router.put('/like',requireLogin,(req,res)=>{
     },{
         new:true
     })
-    .populate("comments.uploadedBy","_id name")
-    .populate("uploadedBy","_id name")
+    .populate("comments.uploadedBy","_id name pic")
+    .populate("uploadedBy","_id name pic")
     .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
@@ -90,8 +92,8 @@ router.put('/unlike',requireLogin,(req,res)=>{
     },{
         new:true
     })
-    .populate("comments.uploadedBy","_id name")
-    .populate("uploadedBy","_id name")
+    .populate("comments.uploadedBy","_id name pic")
+    .populate("uploadedBy","_id name pic")
     .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
@@ -113,8 +115,8 @@ router.put('/comment',requireLogin,(req,res)=>{
     },{
         new:true
     })
-    .populate("comments.uploadedBy","_id name")
-    .populate("uploadedBy","_id name")
+    .populate("comments.uploadedBy","_id name pic")
+    .populate("uploadedBy","_id name pic")
     .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
