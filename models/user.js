@@ -14,8 +14,10 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     resetToken:{
-        type:String,
-        expire:Date
+        type:String
+    },
+    expireToken:{
+        type:Date
     },
     pic:{
         type:String,
