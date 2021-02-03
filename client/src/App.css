@@ -58,3 +58,11 @@ a{
 .brand-logo{
   left: 21%;
 }
+
+.btn{
+  border-radius: 25px;
+}
+
+.collection-item{
+  width:100%;
+}
